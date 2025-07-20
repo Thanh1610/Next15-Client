@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -118,5 +118,17 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 10px #e600ff);
+  }
+  50% {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 20px #ff00cc);
   }
 }
