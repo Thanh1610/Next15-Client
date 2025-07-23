@@ -15,13 +15,17 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { RegisterSchema, RegisterSchemaType } from '@/validations/auth.schema';
 import { registerApi } from '@/services/userServices';
 import { toast } from 'react-toastify';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import LoadingButton from '@/components/LoadingButton';
 import { useRouter } from 'next/navigation';
 import { routes } from '@/config/routes';
+import { Eye, EyeOff } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export default function RegisterForm() {
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const router = useRouter();
   const form = useForm<RegisterSchemaType>({
@@ -29,6 +33,7 @@ export default function RegisterForm() {
     defaultValues: {
       name: '',
       email: '',
+      phone: '',
       password: '',
       confirmPassword: '',
     },
@@ -89,6 +94,21 @@ export default function RegisterForm() {
               )}
             />
 
+            {/* Phone */}
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Số điện thoại</FormLabel>
+                  <FormControl>
+                    <Input placeholder="0123456789" type="tel" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             {/* Password */}
             <FormField
               control={form.control}
@@ -97,14 +117,29 @@ export default function RegisterForm() {
                 <FormItem>
                   <FormLabel>Mật khẩu</FormLabel>
                   <FormControl>
-                    <Input placeholder="********" type="password" {...field} />
+                    <div className="relative">
+                      <Input
+                        placeholder="********"
+                        type={showPassword ? 'text' : 'password'}
+                        {...field}
+                      />
+                      <Button
+                        type="button"
+                        onClick={() => setShowPassword(prev => !prev)}
+                        variant="ghost"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 h-auto p-0 text-muted-foreground"
+                        tabIndex={-1}
+                      >
+                        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </Button>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            {/* ConfirmPassword */}
+            {/* Confirm Password */}
             <FormField
               control={form.control}
               name="confirmPassword"
@@ -112,13 +147,30 @@ export default function RegisterForm() {
                 <FormItem>
                   <FormLabel>Nhập lại mật khẩu</FormLabel>
                   <FormControl>
-                    <Input placeholder="********" type="password" {...field} />
+                    <div className="relative">
+                      <Input
+                        key={showConfirm ? 'text' : 'password'}
+                        placeholder="********"
+                        type={showConfirm ? 'text' : 'password'}
+                        {...field}
+                      />
+                      <Button
+                        type="button"
+                        onClick={() => setShowConfirm(prev => !prev)}
+                        variant="ghost"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 h-auto p-0 text-muted-foreground"
+                        tabIndex={-1}
+                      >
+                        {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </Button>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <LoadingButton isLoading={isLoading} type="submit">
+
+            <LoadingButton isLoading={isLoading} type="submit" className="w-full">
               Đăng kí
             </LoadingButton>
           </form>
