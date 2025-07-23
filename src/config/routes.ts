@@ -1,5 +1,8 @@
 export const routes = {
-  home: '/',
+  home: {
+    path: '/',
+    requireAuth: false,
+  },
   login: {
     path: '/login',
     requireAuth: false,
