@@ -46,7 +46,6 @@ export default function RegisterForm() {
       if (res?.status === 'ERR') {
         return toast.error(res?.message || 'Đăng ký thất bại');
       }
-      console.log('>>>>>res: ', res);
       form.reset();
       toast.success('Đăng ký thành công');
       router.push(routes.login.path);

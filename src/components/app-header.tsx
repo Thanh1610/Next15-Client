@@ -15,6 +15,9 @@ const Header = () => {
           <Link href={routes.register.path}>
             <Button variant="outline">Register</Button>
           </Link>
+          <Link href={routes.profile.path}>
+            <Button variant="outline">Profile</Button>
+          </Link>
         </div>
       </div>
     </div>

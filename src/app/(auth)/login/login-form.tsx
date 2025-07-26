@@ -40,7 +40,20 @@ export default function LoginForm() {
     try {
       const res = await loginApi(values);
       console.log('🚀 ~ onSubmit ~ res:', res);
+
       if (res?.status === 'SUCCESS') {
+        const token = res?.access_token;
+        const setCookieRes = await fetch('/api/auth', {
+          method: 'POST',
+          body: JSON.stringify({ token }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!setCookieRes.ok) {
+          throw new Error('Cookies could not be set.');
+        }
         form.reset();
         toast.success(res?.message || 'Đăng nhập thành công!');
         router.push(routes.home.path);

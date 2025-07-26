@@ -1,10 +1,10 @@
-import React from "react";
-import styles from "./loading-overlay.module.css";
+import React from 'react';
+import styles from './loading-overlay.module.css';
 
 const LoadingOverlay: React.FC = () => {
   return (
     <div
-      className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-50"
+      className="fixed inset-0 z-[1050] flex items-center justify-center bg-white/70 dark:bg-white/20 backdrop-blur-sm"
       style={{ zIndex: 1050 }}
     >
       <div className={styles.loader} />

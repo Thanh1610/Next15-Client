@@ -1,14 +1,17 @@
 export const routes = {
   home: {
     path: '/',
-    requireAuth: false,
   },
   login: {
     path: '/login',
-    requireAuth: false,
   },
   register: {
     path: '/register',
-    requireAuth: false,
+  },
+  profile: {
+    path: '/profile',
+  },
+  notfound: {
+    path: '/not-found',
   },
 };
