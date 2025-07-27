@@ -1,5 +1,6 @@
 import LoadingOverlay from '@/components/LoadingOverlay/LoadingOverlay';
-import { getUser } from '@/lib/getUser';
+import { getUser } from '@/services/userServices';
+import { getAuthCookie } from '@/lib/getAuthCookie';
 
 export const metadata = {
   title: 'Trang cá nhân',
@@ -7,8 +8,10 @@ export const metadata = {
 };
 
 export default async function ProfilePage() {
-  const user = await getUser();
+  const token = await getAuthCookie();
+  if (!token) return null;
 
+  const user = await getUser(token);
   if (!user)
     return (
       <div>

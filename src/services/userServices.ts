@@ -1,13 +1,13 @@
-import axiosInstance from '@/lib/axios';
-import { ApiResponse } from '@/types/api';
-import { LoginSchemaType, RegisterSchemaType } from '@/validations/auth.schema';
+import { fetchUserFromApi } from '@/repositories/userRepository';
 
-export const registerApi = async (data: RegisterSchemaType): Promise<ApiResponse> => {
-  const URL_API = `user/register`;
-  return await axiosInstance.post(URL_API, data);
-};
+export const getUser = async (token: string) => {
+  try {
+    if (!token) return null;
 
-export const loginApi = async (data: LoginSchemaType): Promise<ApiResponse> => {
-  const URL_API = `user/login`;
-  return await axiosInstance.post(URL_API, data);
+    const data = await fetchUserFromApi(token);
+    return data.user;
+  } catch (error: any) {
+    console.error('getUser error:', error.message || error);
+    return null;
+  }
 };
