@@ -13,7 +13,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { RegisterSchema, RegisterSchemaType } from '@/validations/auth.schema';
-import { registerApi } from '@/services/userServices';
+import { registerApi } from '@/repositories/authRepository';
 import { toast } from 'react-toastify';
 import React, { useState } from 'react';
 import LoadingButton from '@/components/LoadingButton';
@@ -44,13 +44,15 @@ export default function RegisterForm() {
     try {
       const res = await registerApi(values);
       if (res?.status === 'ERR') {
-        return toast.error(res?.message || 'Đăng ký thất bại');
+        return toast.error(res?.message || 'Registration failed');
       }
+
       form.reset();
-      toast.success('Đăng ký thành công');
+      toast.success('Registration successful');
       router.push(routes.login.path);
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      toast.error((error as Error).message || 'An error occurred. Please try again.');
     } finally {
       setIsLoading(false);
     }

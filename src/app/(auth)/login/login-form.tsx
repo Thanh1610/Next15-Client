@@ -13,7 +13,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LoginSchema, LoginSchemaType } from '@/validations/auth.schema';
-import { loginApi } from '@/services/userServices';
+import { loginApi, setAuthCookieApi } from '@/repositories/authRepository';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 import LoadingButton from '@/components/LoadingButton';
@@ -39,29 +39,25 @@ export default function LoginForm() {
     setIsLoading(true);
     try {
       const res = await loginApi(values);
-      console.log('🚀 ~ onSubmit ~ res:', res);
-
       if (res?.status === 'SUCCESS') {
         const token = res?.access_token;
-        const setCookieRes = await fetch('/api/auth', {
-          method: 'POST',
-          body: JSON.stringify({ token }),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+        if (!token) throw new Error('Missing token');
 
-        if (!setCookieRes.ok) {
+        try {
+          await setAuthCookieApi(token);
+        } catch {
           throw new Error('Cookies could not be set.');
         }
+
         form.reset();
-        toast.success(res?.message || 'Đăng nhập thành công!');
+        toast.success(res?.message || 'Login successful!');
         router.push(routes.home.path);
       } else {
-        toast.error(res?.message || 'Đăng nhập thất bại!');
+        toast.error(res?.message || 'Login failed!');
       }
     } catch (error) {
       console.log(error);
+      toast.error((error as Error).message || 'An error has occurred!');
     } finally {
       setIsLoading(false);
     }
