@@ -18,8 +18,15 @@ export const registerApi = async (body: RegisterSchemaType): Promise<ApiResponse
 
 export const setAuthCookieApi = async (token: string): Promise<any> => {
   return await http.post({
-    url: '/api/auth',
+    url: '/api/auth/login',
     body: { token },
+    isInternal: true,
+  });
+};
+
+export const logoutApi = async () => {
+  return await http.post({
+    url: '/api/auth/logout',
     isInternal: true,
   });
 };
